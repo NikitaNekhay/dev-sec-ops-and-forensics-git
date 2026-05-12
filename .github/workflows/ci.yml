@@ -201,8 +201,12 @@ jobs:
           VITE_WORKFLOW_RUN_ID: ${{ github.run_id }}
 
       - name: Create distributable archive
-        # Single tar.gz gives one artifact to hash, sign, and attest.
         run: |
+          echo "Contents of web-app/ after build:"
+          ls -la web-app/
+          echo "Looking for dist or build folder:"
+          ls -la web-app/dist 2>/dev/null || echo "No dist folder"
+          ls -la web-app/build 2>/dev/null || echo "No build folder"
           tar -czf ${{ env.ARTIFACT_NAME }}.tar.gz -C ${{ env.APP_DIR }}/dist .
           echo "Archive size: $(ls -lh ${{ env.ARTIFACT_NAME }}.tar.gz | awk '{print $5}')"
 
