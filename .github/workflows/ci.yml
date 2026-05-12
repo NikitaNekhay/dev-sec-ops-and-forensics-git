@@ -341,16 +341,13 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     permissions:
-      actions: read    # detect GitHub Actions environment
-      id-token: write  # sign provenance with OIDC token
-      contents: write  # upload provenance to workflow artifacts
+      actions: read
+      id-token: write
+      contents: write
 
-    # Must be pinned to exact version tag — required by slsa-verifier
     uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v2.1.0
     with:
-      # base64-subjects must encode "sha256:<HASH>  <filename>"
-      # We pass the hash as both subject identifier and filename placeholder
-      base64-subjects: "${{ needs.build.outputs.artifact-hash }}  react-app-dist.tar.gz"
+      base64-subjects: "${{ needs.build.outputs.artifact-hash }}"
       upload-assets: false
 
   # ==========================================================
