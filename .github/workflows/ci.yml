@@ -194,11 +194,11 @@ jobs:
         run: npm run build
         env:
           # Embed forensic build metadata into the shipped artifact
-          VITE_BUILD_SHA: ${{ github.sha }}
-          VITE_BUILD_REF: ${{ github.ref_name }}
-          VITE_BUILD_ACTOR: ${{ github.actor }}
-          VITE_BUILD_TIME: ${{ github.event.head_commit.timestamp }}
-          VITE_WORKFLOW_RUN_ID: ${{ github.run_id }}
+          NEXT_PUBLIC_BUILD_SHA: ${{ github.sha }}
+          NEXT_PUBLIC_BUILD_REF: ${{ github.ref_name }}
+          NEXT_PUBLIC_BUILD_ACTOR: ${{ github.actor }}
+          NEXT_PUBLIC_BUILD_TIME: ${{ github.event.head_commit.timestamp }}
+          NEXT_PUBLIC_WORKFLOW_RUN_ID: ${{ github.run_id }}
 
       - name: Create distributable archive
         run: |
@@ -207,7 +207,7 @@ jobs:
           echo "Looking for dist or build folder:"
           ls -la web-app/dist 2>/dev/null || echo "No dist folder"
           ls -la web-app/build 2>/dev/null || echo "No build folder"
-          tar -czf ${{ env.ARTIFACT_NAME }}.tar.gz -C ${{ env.APP_DIR }}/dist .
+          tar -czf ${{ env.ARTIFACT_NAME }}.tar.gz -C ${{ env.APP_DIR }} .next
           echo "Archive size: $(ls -lh ${{ env.ARTIFACT_NAME }}.tar.gz | awk '{print $5}')"
 
       - name: Compute SHA-256 hash
