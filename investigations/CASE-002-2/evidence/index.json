@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "ev_mp4cbkbh_fi32yt",
+    "originalFilename": "sbom.spdx.json",
+    "storedFilename": "2026-05-13-sbom.spdx.json",
+    "path": "investigations/CASE-002-2/evidence/logs/2026-05-13-sbom.spdx.json",
+    "sizeBytes": 513437,
+    "mimeType": "application/json",
+    "sha256": "c6349470ec12f6dec8693fd2e8d9b50c0e2bd10cdc1fdb15617ddbcb3133c392",
+    "uploadedAt": "2026-05-13T17:35:28.157Z",
+    "uploadedBy": "Nik",
+    "description": ""
+  }
+]

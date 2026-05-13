@@ -6,5 +6,13 @@
     "title": "Case created",
     "description": "Initial investigation case was created.",
     "source": "ForensicPad"
+  },
+  {
+    "id": "evt_mp4cbkbi_gjk5vd",
+    "timestamp": "2026-05-13T17:35:28.157Z",
+    "type": "evidence_uploaded",
+    "title": "Evidence uploaded",
+    "description": "sbom.spdx.json was added to evidence.",
+    "source": "ForensicPad"
   }
 ]
