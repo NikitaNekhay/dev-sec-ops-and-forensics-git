@@ -1,0 +1,10 @@
+[
+  {
+    "id": "evt_mp4c60hm_y7eddw",
+    "timestamp": "2026-05-13T17:31:09.178Z",
+    "type": "case_created",
+    "title": "Case created",
+    "description": "Initial investigation case was created.",
+    "source": "ForensicPad"
+  }
+]

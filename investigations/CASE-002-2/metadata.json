@@ -1,0 +1,17 @@
+{
+  "caseId": "CASE-002",
+  "title": "2",
+  "status": "Opened",
+  "severity": "Medium",
+  "createdAt": "2026-05-13T17:31:09.178Z",
+  "updatedAt": "2026-05-13T17:31:09.178Z",
+  "investigator": "Victor",
+  "relatedRepository": "",
+  "relatedCommitSha": "",
+  "relatedWorkflowRun": "",
+  "relatedArtifact": "",
+  "tags": [
+    "Malware"
+  ],
+  "summary": ""
+}
