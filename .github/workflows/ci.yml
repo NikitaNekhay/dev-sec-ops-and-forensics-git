@@ -51,8 +51,7 @@ env:
   ARTIFACT_NAME: "react-app-dist"
   # Path to the web application within the monorepo
   APP_DIR: "web-app"
-
-# ==========================================================
+  # ==========================================================
   # PHASE 1 — CodeQL Static Analysis
   #
   # Forensic value: detects vulnerabilities BEFORE they ship.
