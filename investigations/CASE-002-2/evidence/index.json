@@ -10,5 +10,17 @@
     "uploadedAt": "2026-05-13T17:35:28.157Z",
     "uploadedBy": "Nik",
     "description": ""
+  },
+  {
+    "id": "ev_mp4cmxgl_tn2emx",
+    "originalFilename": "demo-vulnerabilities.js",
+    "storedFilename": "2026-05-13-demo-vulnerabilities.js",
+    "path": "investigations/CASE-002-2/evidence/scripts/2026-05-13-demo-vulnerabilities.js",
+    "sizeBytes": 6189,
+    "mimeType": "application/x-javascript",
+    "sha256": "8bb1319a992fa9e7c79895f3a3f97becf5036e5d10a9a6d7c8173e89a7ad9577",
+    "uploadedAt": "2026-05-13T17:44:18.405Z",
+    "uploadedBy": "Victor",
+    "description": "Malware"
   }
 ]
