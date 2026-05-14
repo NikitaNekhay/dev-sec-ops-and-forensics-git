@@ -95,15 +95,16 @@ jobs:
         with:
           category: "/language:javascript-typescript"
           upload: true
+          output: codeql-results
         timeout-minutes: 30
 
       - name: Upload SARIF as forensic artifact
         uses: actions/upload-artifact@v4
         with:
           name: codeql-sarif-report
-          path: /home/runner/work/dev-sec-ops-and-forensics-git/results/javascript.sarif
+          path: codeql-results/
           retention-days: 90
-        if: always()
+        if-no-files-found: warn()
   # ==========================================================
   # PHASE 2 — Dependency Audit
   #
