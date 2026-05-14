@@ -104,7 +104,7 @@ jobs:
           name: codeql-sarif-report
           path: codeql-results/
           retention-days: 90
-        if-no-files-found: warn()
+        if: always()
   # ==========================================================
   # PHASE 2 — Dependency Audit
   #
