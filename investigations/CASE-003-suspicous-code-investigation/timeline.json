@@ -6,5 +6,13 @@
     "title": "Case created",
     "description": "Initial investigation case was created.",
     "source": "ForensicPad"
+  },
+  {
+    "id": "evt_mp5ovaa4_a224jj",
+    "timestamp": "2026-05-14T16:14:29.835Z",
+    "type": "evidence_uploaded",
+    "title": "Evidence uploaded",
+    "description": "codeql-sarif-report(3).zip was added to evidence.",
+    "source": "ForensicPad"
   }
 ]
