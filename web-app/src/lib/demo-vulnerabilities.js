@@ -58,22 +58,7 @@ function getUserData(req, res) {
 // Private keys and passwords embedded in source = instant
 // compromise if repo is ever made public or leaked.
 // ─────────────────────────────────────────────────────────
-const config = {
-  // VULNERABLE: hardcoded database password
-  db_password: "Sup3rS3cr3tP@ssw0rd!",
 
-  // VULNERABLE: hardcoded API key
-  api_key: "sk-live-aBcDeFgHiJkLmNoPqRsTuVwXyZ1234567890abcd",
-
-  // VULNERABLE: hardcoded JWT secret
-  jwt_secret: "my-super-secret-jwt-key-do-not-share",
-
-  // VULNERABLE: hardcoded AWS-style key (triggers Secret Scanning)
-  aws_access_key: "AKIAIOSFODNN7EXAMPLE",
-  aws_secret_key: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-};
-
-// ─────────────────────────────────────────────────────────
 // VULNERABILITY 4: Path Traversal — CWE-22
 // CodeQL rule: js/path-injection
 // User-supplied filename used in file system operations
