@@ -10,5 +10,17 @@
     "uploadedAt": "2026-05-14T16:14:29.835Z",
     "uploadedBy": "Victor",
     "description": "Code report on malicious"
+  },
+  {
+    "id": "ev_mp5ru13t_17bvy9",
+    "originalFilename": "javascript.sarif",
+    "storedFilename": "2026-05-14-javascript.sarif",
+    "path": "investigations/CASE-003-suspicous-code-investigation/evidence/logs/2026-05-14-javascript.sarif",
+    "sizeBytes": 639647,
+    "mimeType": "application/octet-stream",
+    "sha256": "b0eab646fc027fe1d24cd48b6d977ffac084dde37b333d685fcb3e4546bb8ed3",
+    "uploadedAt": "2026-05-14T17:37:30.136Z",
+    "uploadedBy": "Victor",
+    "description": ""
   }
 ]
