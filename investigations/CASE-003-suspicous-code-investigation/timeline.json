@@ -46,5 +46,13 @@
     "title": "Evidence uploaded",
     "description": "forensic-audit-event.json was added to evidence.",
     "source": "ForensicPad"
+  },
+  {
+    "id": "evt_mp7doapq_gy9eir",
+    "timestamp": "2026-05-15T20:36:40.382Z",
+    "type": "time_session",
+    "title": "Time session logged",
+    "description": "5 minutes added to the investigation.",
+    "source": "ForensicPad"
   }
 ]
