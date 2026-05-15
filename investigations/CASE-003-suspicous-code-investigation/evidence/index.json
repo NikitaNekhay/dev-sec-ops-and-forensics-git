@@ -34,5 +34,17 @@
     "uploadedAt": "2026-05-15T20:06:16.995Z",
     "uploadedBy": "Nik",
     "description": "sarif file"
+  },
+  {
+    "id": "ev_mp7dngb6_2vffj1",
+    "originalFilename": "forensic-audit-event.json",
+    "storedFilename": "2026-05-15-forensic-audit-event.json",
+    "path": "investigations/CASE-003-suspicous-code-investigation/evidence/logs/2026-05-15-forensic-audit-event.json",
+    "sizeBytes": 1450,
+    "mimeType": "application/json",
+    "sha256": "2138fa3bae28eb4952f3a37fb84064400d8759590b7ac6ab0587b2a4e43ae6da",
+    "uploadedAt": "2026-05-15T20:36:00.977Z",
+    "uploadedBy": "Nik",
+    "description": "artifact from ci/cd of this web-app"
   }
 ]

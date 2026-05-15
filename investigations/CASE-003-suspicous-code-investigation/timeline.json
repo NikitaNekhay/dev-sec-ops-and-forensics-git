@@ -38,5 +38,13 @@
     "title": "Report updated",
     "description": "report.md was committed to GitHub.",
     "source": "ForensicPad"
+  },
+  {
+    "id": "evt_mp7dngb6_qy6wkz",
+    "timestamp": "2026-05-15T20:36:00.977Z",
+    "type": "evidence_uploaded",
+    "title": "Evidence uploaded",
+    "description": "forensic-audit-event.json was added to evidence.",
+    "source": "ForensicPad"
   }
 ]

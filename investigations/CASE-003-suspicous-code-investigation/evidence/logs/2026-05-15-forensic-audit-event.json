@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "event_type": "ci_pipeline_run",
+  "timestamp": "2026-05-15T20:33:02Z",
+  "pipeline": {
+    "workflow": "Secure CI/CD Pipeline — Forensic",
+    "run_id": "25939899893",
+    "run_number": "18",
+    "run_attempt": "1"
+  },
+  "source": {
+    "repository": "NikitaNekhay/dev-sec-ops-and-forensics-git",
+    "ref": "refs/heads/main",
+    "sha": "88299ef8e2699049a9625e76041b5599c075cd22",
+    "branch": "main",
+    "base_sha": "4554e447ff9f500d1ade43729dadba474a00a6ab"
+  },
+  "actor": {
+    "github_actor": "NikitaNekhay",
+    "triggering_actor": "NikitaNekhay",
+    "event_name": "push"
+  },
+  "artifact": {
+    "name": "react-app-dist.tar.gz",
+    "sha256": "bd3ffd3e341afa343b4c905780b1c12709f944f178fffa112d812e254680d696"
+  },
+  "security_controls": {
+    "phase_1_codeql": "success",
+    "phase_2_dependency_audit": "success",
+    "phase_3_sbom_generated": "spdx-json + cyclonedx-json",
+    "phase_4_cosign_signed": "success",
+    "phase_5_slsa_provenance": "level-3",
+    "oidc_federation": "enabled",
+    "hardcoded_secrets": "none",
+    "secret_scanning": "enabled-in-repo-settings"
+  },
+  "retained_artifacts": [
+    "npm-audit-report",
+    "sbom-files",
+    "react-app-dist",
+    "cosign-bundle",
+    "forensic-audit-event"
+  ],
+  "retention_policy_days": 90,
+  "forensic_note": "All artifacts retained 90 days. Cosign bundle verifiable via Sigstore Rekor transparency log independently of this repository."
+}
