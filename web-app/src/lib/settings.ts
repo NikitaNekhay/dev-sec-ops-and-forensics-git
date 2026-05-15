@@ -13,7 +13,7 @@ export function defaultSettings(): AppSettings {
     branch: "main",
     investigationsRoot: "investigations",
     allowedExtensions: DEFAULT_ALLOWED_EXTENSIONS,
-    maxEvidenceFileSizeMb: 5,
+    maxEvidenceFileSizeMb: 15,
     reportTemplateHeadings: DEFAULT_TEMPLATE_HEADINGS,
     openRouterModel: OPENROUTER_DEFAULT_MODEL,
     aiContextScope: AI_CONTEXT_SCOPES[2]
@@ -23,5 +23,13 @@ export function defaultSettings(): AppSettings {
 export function loadClientSettings(): AppSettings {
   if (typeof window === "undefined") return defaultSettings();
   const stored = window.localStorage.getItem(SETTINGS_KEY);
-  return stored ? { ...defaultSettings(), ...safeJson<Partial<AppSettings>>(stored, {}) } : defaultSettings();
+  if (!stored) return defaultSettings();
+  const defaults = defaultSettings();
+  const parsed = safeJson<Partial<AppSettings>>(stored, {});
+  return {
+    ...defaults,
+    ...parsed,
+    allowedExtensions: Array.from(new Set([...defaults.allowedExtensions, ...(parsed.allowedExtensions ?? [])])),
+    reportTemplateHeadings: parsed.reportTemplateHeadings?.length ? parsed.reportTemplateHeadings : defaults.reportTemplateHeadings
+  };
 }

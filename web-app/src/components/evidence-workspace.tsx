@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FileUp, Hash, Upload } from "lucide-react";
 import { apiFetch } from "@/lib/client-api";
+import { isAllowedEvidenceExtension, isSarifEvidence, isTextPreviewExtension } from "@/lib/evidence";
 import { loadClientSettings } from "@/lib/settings";
 import type { EvidenceItem } from "@/lib/types";
 import { getFileExtension } from "@/lib/utils";
@@ -38,7 +39,7 @@ function decodePreview(base64?: string | null) {
 
 function formatTextPreview(text: string, extension: string) {
   const trimmed = text.length > 80_000 ? `${text.slice(0, 80_000)}\n\n[Preview truncated for performance.]` : text;
-  if (extension !== "json") return trimmed;
+  if (extension !== "json" && extension !== "sarif" && extension !== "sarif.json") return trimmed;
   try {
     return JSON.stringify(JSON.parse(trimmed), null, 2);
   } catch {
@@ -66,7 +67,7 @@ export function EvidenceWorkspace({ caseId }: { caseId: string }) {
       if (!file) throw new Error("Choose an evidence file first.");
       const settings = loadClientSettings();
       const extension = getFileExtension(file.name);
-      if (!settings.allowedExtensions.includes(extension)) {
+      if (!isAllowedEvidenceExtension(extension, settings.allowedExtensions)) {
         throw new Error(`.${extension || "unknown"} files are not allowed by local evidence settings.`);
       }
       if (file.size > settings.maxEvidenceFileSizeMb * 1024 * 1024) {
@@ -99,6 +100,7 @@ export function EvidenceWorkspace({ caseId }: { caseId: string }) {
     return `data:${selected.mimeType};base64,${content.base64}`;
   }, [content?.base64, selected]);
   const selectedExtension = selected ? getFileExtension(selected.originalFilename) : "";
+  const selectedIsSarif = selected ? isSarifEvidence(selected.originalFilename) : false;
   const decodedText = useMemo(() => decodePreview(content?.base64), [content?.base64]);
   const textPreview = useMemo(() => formatTextPreview(decodedText, selectedExtension), [decodedText, selectedExtension]);
 
@@ -135,7 +137,7 @@ export function EvidenceWorkspace({ caseId }: { caseId: string }) {
               <button key={item.id} className="grid gap-1 rounded-md border border-border p-3 text-left hover:border-primary" onClick={() => setSelected(item)}>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <strong>{item.originalFilename}</strong>
-                  <Badge>{getFileExtension(item.originalFilename) || "file"}</Badge>
+                  <Badge>{isSarifEvidence(item.originalFilename) ? "sarif" : getFileExtension(item.originalFilename) || "file"}</Badge>
                 </div>
                 <span className="text-xs text-slate-500">{item.path}</span>
                 <span className="flex items-center gap-1 text-xs text-slate-600"><Hash size={13} /> {item.sha256.slice(0, 24)}...</span>
@@ -151,13 +153,14 @@ export function EvidenceWorkspace({ caseId }: { caseId: string }) {
               <div className="break-all rounded-md bg-muted p-3">{selected.sha256}</div>
               {selected.mimeType.startsWith("image/") && previewUrl ? <img src={previewUrl} alt={selected.originalFilename} className="max-h-[420px] rounded-md border border-border object-contain" /> : null}
               {selected.mimeType.includes("pdf") && previewUrl ? <iframe src={previewUrl} className="h-[420px] w-full rounded-md border border-border" title={selected.originalFilename} /> : null}
-              {["txt", "log", "json", "csv", "md", "js", "ts", "sh", "py", "yml", "yaml"].includes(selectedExtension) && content?.base64 ? (
+              {isTextPreviewExtension(selectedExtension) && content?.base64 ? (
                 selectedExtension === "md" ? (
                   <MarkdownPreview value={textPreview} />
                 ) : (
                   <pre className="max-h-[420px] overflow-auto rounded-md bg-slate-950 p-3 text-xs text-white">{textPreview}</pre>
                 )
               ) : null}
+              {selectedIsSarif ? <div className="rounded-md border border-primary/25 bg-primary/5 p-3 text-sm text-slate-700">CodeQL SARIF evidence detected. Findings are preserved as raw SARIF JSON for report review and AI context.</div> : null}
               {["zip", "tar.gz"].includes(selectedExtension) ? <div className="rounded-md bg-muted p-3">Archive metadata only. Extraction is intentionally not performed.</div> : null}
             </div>
           ) : (

@@ -9,6 +9,7 @@ import {
   SEVERITIES
 } from "./constants";
 import type { CaseListItem, CaseMetadata, CommitItem, EvidenceItem, TimelineEvent, TimeSession } from "./types";
+import { isAllowedEvidenceExtension } from "./evidence";
 import { OPENROUTER_DEFAULT_MODEL } from "./settings";
 import { classifyEvidence, getFileExtension, makeId, makeReportTemplate, sanitizeFilename, slugify } from "./utils";
 
@@ -346,10 +347,10 @@ export async function uploadEvidence(
   }
 ) {
   const ext = getFileExtension(input.originalFilename);
-  if (!DEFAULT_ALLOWED_EXTENSIONS.includes(ext)) {
+  if (!isAllowedEvidenceExtension(ext, DEFAULT_ALLOWED_EXTENSIONS)) {
     throw new Error(`.${ext || "unknown"} files are not allowed.`);
   }
-  const maxBytes = Number(process.env.MAX_EVIDENCE_FILE_SIZE_MB ?? 5) * 1024 * 1024;
+  const maxBytes = Number(process.env.MAX_EVIDENCE_FILE_SIZE_MB ?? 15) * 1024 * 1024;
   if (input.sizeBytes > maxBytes) throw new Error(`Evidence file exceeds ${Math.round(maxBytes / 1024 / 1024)} MB.`);
 
   const buffer = Buffer.from(input.base64, "base64");

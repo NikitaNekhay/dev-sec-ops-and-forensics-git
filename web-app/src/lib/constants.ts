@@ -20,6 +20,7 @@ export const DEFAULT_ALLOWED_EXTENSIONS = [
   "txt",
   "csv",
   "json",
+  "sarif",
   "zip",
   "tar.gz",
   "log",

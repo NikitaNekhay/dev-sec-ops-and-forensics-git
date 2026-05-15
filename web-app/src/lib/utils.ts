@@ -1,4 +1,5 @@
 import { DEFAULT_TEMPLATE_HEADINGS } from "./constants";
+import { getEvidenceExtension, isSarifEvidence } from "./evidence";
 
 export function cn(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(" ");
@@ -36,16 +37,13 @@ export function safeJson<T>(value: string, fallback: T): T {
 }
 
 export function getFileExtension(filename: string) {
-  const lower = filename.toLowerCase();
-  if (lower.endsWith(".tar.gz")) return "tar.gz";
-  const part = lower.split(".").pop();
-  return part ?? "";
+  return getEvidenceExtension(filename);
 }
 
 export function classifyEvidence(filename: string, mimeType = "") {
   const ext = getFileExtension(filename);
   if (["png", "jpg", "jpeg", "webp"].includes(ext)) return "screenshots";
-  if (["log", "txt", "csv", "json", "md"].includes(ext)) return "logs";
+  if (["log", "txt", "csv", "json", "sarif", "sarif.json", "md"].includes(ext) || isSarifEvidence(filename)) return "logs";
   if (["zip", "tar.gz"].includes(ext)) return "archives";
   if (["pdf"].includes(ext) || mimeType.includes("pdf")) return "documents";
   if (["js", "ts", "sh", "py", "yml", "yaml"].includes(ext)) return "scripts";
