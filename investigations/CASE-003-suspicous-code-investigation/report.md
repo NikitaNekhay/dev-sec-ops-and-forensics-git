@@ -1,4 +1,6 @@
 # Case Summary
+Investigator: Nik
+
 
 ## Case Information
 

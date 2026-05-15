@@ -30,5 +30,13 @@
     "title": "Evidence uploaded",
     "description": "javascript.sarif was added to evidence.",
     "source": "ForensicPad"
+  },
+  {
+    "id": "evt_mp7dgu6u_jg127r",
+    "timestamp": "2026-05-15T20:30:52.374Z",
+    "type": "report_updated",
+    "title": "Report updated",
+    "description": "report.md was committed to GitHub.",
+    "source": "ForensicPad"
   }
 ]
