@@ -1,0 +1,26 @@
+[
+  {
+    "id": "evt_mp4c60hm_y7eddw",
+    "timestamp": "2026-05-13T17:31:09.178Z",
+    "type": "case_created",
+    "title": "Case created",
+    "description": "Initial investigation case was created.",
+    "source": "ForensicPad"
+  },
+  {
+    "id": "evt_mp4cbkbi_gjk5vd",
+    "timestamp": "2026-05-13T17:35:28.157Z",
+    "type": "evidence_uploaded",
+    "title": "Evidence uploaded",
+    "description": "sbom.spdx.json was added to evidence.",
+    "source": "ForensicPad"
+  },
+  {
+    "id": "evt_mp4cmxgl_76c2d0",
+    "timestamp": "2026-05-13T17:44:18.405Z",
+    "type": "evidence_uploaded",
+    "title": "Evidence uploaded",
+    "description": "demo-vulnerabilities.js was added to evidence.",
+    "source": "ForensicPad"
+  }
+]
