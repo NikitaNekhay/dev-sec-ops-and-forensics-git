@@ -22,5 +22,17 @@
     "uploadedAt": "2026-05-14T17:37:30.136Z",
     "uploadedBy": "Victor",
     "description": ""
+  },
+  {
+    "id": "ev_mp7cl7s4_f7n7zw",
+    "originalFilename": "javascript.sarif",
+    "storedFilename": "2026-05-15-javascript.sarif",
+    "path": "investigations/CASE-003-suspicous-code-investigation/evidence/logs/2026-05-15-javascript.sarif",
+    "sizeBytes": 640339,
+    "mimeType": "application/octet-stream",
+    "sha256": "fe2f0c961fe6470b21b721ac70852409c234325859637ddaae34f8af0a1fb447",
+    "uploadedAt": "2026-05-15T20:06:16.995Z",
+    "uploadedBy": "Nik",
+    "description": "sarif file"
   }
 ]
