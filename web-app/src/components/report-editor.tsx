@@ -1,8 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { markdown } from "@codemirror/lang-markdown";
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GitCommit, List, RotateCcw, Save } from "lucide-react";
 import { apiFetch } from "@/lib/client-api";
@@ -11,8 +9,6 @@ import { applyReportPatch } from "@/lib/utils";
 import { useAppStore } from "@/lib/store";
 import { MarkdownPreview } from "@/components/markdown-preview";
 import { Badge, Button, Card, ErrorState } from "@/components/ui";
-
-const CodeMirror = dynamic(() => import("@uiw/react-codemirror"), { ssr: false });
 
 export function ReportEditor({ caseId }: { caseId: string }) {
   const queryClient = useQueryClient();
@@ -26,6 +22,7 @@ export function ReportEditor({ caseId }: { caseId: string }) {
   const [report, setReport] = useState("");
   const [draftRestored, setDraftRestored] = useState(false);
   const committedReport = data?.report ?? "";
+  const previewReport = useDeferredValue(report);
 
   useEffect(() => {
     if (data?.report && !draftRestored) {
@@ -36,7 +33,9 @@ export function ReportEditor({ caseId }: { caseId: string }) {
   }, [data?.report, draftKey, draftRestored]);
 
   useEffect(() => {
-    if (draftRestored) localStorage.setItem(draftKey, report);
+    if (!draftRestored) return;
+    const timer = window.setTimeout(() => localStorage.setItem(draftKey, report), 350);
+    return () => window.clearTimeout(timer);
   }, [draftKey, draftRestored, report]);
 
   const headings = useMemo(
@@ -102,10 +101,10 @@ export function ReportEditor({ caseId }: { caseId: string }) {
           </div>
         </Card>
       ) : null}
-      <div className="grid min-h-[640px] gap-4 xl:grid-cols-[220px_1fr_1fr]">
-        <Card className="overflow-hidden">
+      <div className="grid min-h-[640px] gap-4 xl:grid-cols-[220px_minmax(0,1fr)_minmax(0,1fr)]">
+        <Card className="overflow-hidden bg-white/95">
           <div className="border-b border-border p-3 text-sm font-semibold">Headings</div>
-          <div className="grid gap-1 p-2">
+          <div className="grid max-h-[600px] gap-1 overflow-auto p-2">
             {headings.map((item) => (
               <button key={`${item.index}-${item.line}`} className="rounded px-2 py-1 text-left text-sm hover:bg-muted" onClick={() => navigator.clipboard?.writeText(String(item.index + 1))}>
                 {item.line.replace(/^#+\s*/, "")}
@@ -113,19 +112,18 @@ export function ReportEditor({ caseId }: { caseId: string }) {
             ))}
           </div>
         </Card>
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden bg-white/95">
           <div className="border-b border-border p-3 text-sm font-semibold">Markdown editor</div>
-          <CodeMirror
+          <textarea
             value={report}
-            height="600px"
-            extensions={[markdown()]}
-            onChange={setReport}
-            basicSetup={{ lineNumbers: true, foldGutter: true }}
+            onChange={(event) => setReport(event.target.value)}
+            spellCheck={false}
+            className="h-[600px] w-full resize-none border-0 bg-white p-4 font-mono text-sm leading-6 outline-none"
           />
         </Card>
-        <Card className="overflow-auto">
+        <Card className="overflow-auto bg-white/95">
           <div className="border-b border-border p-3 text-sm font-semibold">Preview</div>
-          <MarkdownPreview value={report} />
+          <MarkdownPreview value={previewReport} />
         </Card>
       </div>
     </div>

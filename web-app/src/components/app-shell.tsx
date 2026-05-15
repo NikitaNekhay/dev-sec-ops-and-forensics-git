@@ -15,7 +15,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[244px_1fr]">
-      <aside className="border-b border-border bg-slate-950 text-white lg:min-h-screen lg:border-b-0 lg:border-r">
+      <aside className="border-b border-border bg-slate-950 text-white lg:sticky lg:top-0 lg:min-h-screen lg:border-b-0 lg:border-r">
         <div className="flex h-16 items-center gap-3 px-5">
           <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary">
             <ShieldCheck size={22} />

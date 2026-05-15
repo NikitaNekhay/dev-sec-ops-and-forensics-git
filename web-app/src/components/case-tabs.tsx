@@ -18,7 +18,7 @@ const tabs = [
 export function CaseTabs({ caseId }: { caseId: string }) {
   const pathname = usePathname();
   return (
-    <div className="flex gap-1 overflow-x-auto border-b border-border bg-white px-6">
+    <div className="sticky top-0 z-20 flex gap-1 overflow-x-auto border-b border-border bg-white/95 px-6 backdrop-blur">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const href = `/cases/${caseId}/${tab.href}`;

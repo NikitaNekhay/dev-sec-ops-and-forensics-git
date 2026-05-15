@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useDeferredValue, useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { GitCommit, Plus } from "lucide-react";
 import { apiFetch } from "@/lib/client-api";
@@ -10,6 +10,7 @@ import { Button, Card, ErrorState } from "@/components/ui";
 export function NotesWorkspace({ caseId }: { caseId: string }) {
   const queryClient = useQueryClient();
   const [notes, setNotes] = useState("");
+  const previewNotes = useDeferredValue(notes);
   const { data, error } = useQuery({
     queryKey: ["notes", caseId],
     queryFn: () => apiFetch<{ notes: string }>(`/api/cases/${caseId}/notes`)
@@ -45,7 +46,7 @@ export function NotesWorkspace({ caseId }: { caseId: string }) {
       </Card>
       <Card className="overflow-auto">
         <div className="border-b border-border p-3 font-semibold">Preview</div>
-        <MarkdownPreview value={notes} />
+        <MarkdownPreview value={previewNotes} />
       </Card>
     </div>
   );

@@ -9,10 +9,10 @@ export function Button({
     <button
       className={cn(
         "inline-flex min-h-10 items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50",
-        variant === "primary" && "bg-primary text-white hover:opacity-90",
-        variant === "secondary" && "border border-border bg-white hover:bg-muted",
-        variant === "danger" && "bg-danger text-white hover:opacity-90",
-        variant === "ghost" && "hover:bg-muted",
+        variant === "primary" && "bg-primary text-white shadow-sm hover:bg-primary/90",
+        variant === "secondary" && "border border-border bg-white hover:bg-slate-50",
+        variant === "danger" && "bg-danger text-white shadow-sm hover:bg-danger/90",
+        variant === "ghost" && "hover:bg-slate-100",
         className
       )}
       {...props}
@@ -43,7 +43,7 @@ export function Field({
 }
 
 export const inputClass =
-  "min-h-10 rounded-md border border-border bg-white px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/15";
+  "min-h-10 rounded-md border border-border bg-white px-3 py-2 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15";
 
 export function Badge({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "green" | "amber" | "red" }) {
   return (

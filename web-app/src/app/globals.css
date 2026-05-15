@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --background: 210 30% 98%;
+  --background: 210 32% 97%;
   --foreground: 218 35% 12%;
   --panel: 0 0% 100%;
   --muted: 213 22% 92%;
@@ -19,8 +19,11 @@
 
 body {
   margin: 0;
-  background: hsl(var(--background));
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(241, 245, 249, 0.94)),
+    hsl(var(--background));
   color: hsl(var(--foreground));
+  text-rendering: optimizeLegibility;
 }
 
 button,
@@ -28,6 +31,23 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  letter-spacing: 0;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: hsl(var(--primary) / 0.18);
 }
 
 .prose h1,

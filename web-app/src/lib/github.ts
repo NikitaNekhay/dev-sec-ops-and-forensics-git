@@ -18,6 +18,9 @@ type CommitFile = {
   encoding?: "utf-8" | "base64";
 };
 
+const LIST_CASES_CACHE_MS = 20_000;
+let casesCache: { key: string; expiresAt: number; data: CaseListItem[] } | null = null;
+
 export type ServerSettings = {
   owner: string;
   repo: string;
@@ -163,11 +166,16 @@ export async function commitFiles(message: string, files: CommitFile[]) {
     ref: `heads/${settings.branch}`,
     sha: commit.data.sha
   });
+  casesCache = null;
   return commit.data;
 }
 
 export async function listCases(): Promise<CaseListItem[]> {
   const settings = requireRepo();
+  const cacheKey = `${settings.owner}/${settings.repo}/${settings.branch}/${settings.root}`;
+  if (casesCache?.key === cacheKey && casesCache.expiresAt > Date.now()) {
+    return casesCache.data;
+  }
   const content = await getContent(settings.root);
   if (!content || !Array.isArray(content)) return [];
 
@@ -191,7 +199,9 @@ export async function listCases(): Promise<CaseListItem[]> {
     })
   );
 
-  return cases.filter(Boolean).sort((a, b) => b!.updatedAt.localeCompare(a!.updatedAt)) as CaseListItem[];
+  const data = cases.filter(Boolean).sort((a, b) => b!.updatedAt.localeCompare(a!.updatedAt)) as CaseListItem[];
+  casesCache = { key: cacheKey, expiresAt: Date.now() + LIST_CASES_CACHE_MS, data };
+  return data;
 }
 
 export async function findCaseFolder(caseIdOrFolder: string) {

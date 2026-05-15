@@ -10,17 +10,40 @@ import { getFileExtension } from "@/lib/utils";
 import { MarkdownPreview } from "@/components/markdown-preview";
 import { Badge, Button, Card, ErrorState, Field, inputClass } from "@/components/ui";
 
-async function fileToBase64(file: File) {
-  const buffer = await file.arrayBuffer();
+function arrayBufferToBase64(buffer: ArrayBuffer) {
   const bytes = new Uint8Array(buffer);
   let binary = "";
-  bytes.forEach((byte) => (binary += String.fromCharCode(byte)));
+  const chunkSize = 0x8000;
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize));
+  }
   return btoa(binary);
 }
 
-async function sha256(file: File) {
-  const digest = await crypto.subtle.digest("SHA-256", await file.arrayBuffer());
-  return Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+async function prepareEvidenceFile(file: File) {
+  const buffer = await file.arrayBuffer();
+  const digest = await crypto.subtle.digest("SHA-256", buffer);
+  const sha256 = Array.from(new Uint8Array(digest)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  return { base64: arrayBufferToBase64(buffer), sha256 };
+}
+
+function decodePreview(base64?: string | null) {
+  if (!base64) return "";
+  try {
+    return atob(base64);
+  } catch {
+    return "Unable to decode preview.";
+  }
+}
+
+function formatTextPreview(text: string, extension: string) {
+  const trimmed = text.length > 80_000 ? `${text.slice(0, 80_000)}\n\n[Preview truncated for performance.]` : text;
+  if (extension !== "json") return trimmed;
+  try {
+    return JSON.stringify(JSON.parse(trimmed), null, 2);
+  } catch {
+    return trimmed;
+  }
 }
 
 export function EvidenceWorkspace({ caseId }: { caseId: string }) {
@@ -49,14 +72,15 @@ export function EvidenceWorkspace({ caseId }: { caseId: string }) {
       if (file.size > settings.maxEvidenceFileSizeMb * 1024 * 1024) {
         throw new Error(`Evidence file exceeds ${settings.maxEvidenceFileSizeMb} MB.`);
       }
+      const prepared = await prepareEvidenceFile(file);
       return apiFetch(`/api/cases/${caseId}/evidence`, {
         method: "POST",
         body: JSON.stringify({
           originalFilename: file.name,
           mimeType: file.type || "application/octet-stream",
           sizeBytes: file.size,
-          base64: await fileToBase64(file),
-          sha256: await sha256(file),
+          base64: prepared.base64,
+          sha256: prepared.sha256,
           uploadedBy,
           description
         })
@@ -74,6 +98,9 @@ export function EvidenceWorkspace({ caseId }: { caseId: string }) {
     if (!selected || !content?.base64) return "";
     return `data:${selected.mimeType};base64,${content.base64}`;
   }, [content?.base64, selected]);
+  const selectedExtension = selected ? getFileExtension(selected.originalFilename) : "";
+  const decodedText = useMemo(() => decodePreview(content?.base64), [content?.base64]);
+  const textPreview = useMemo(() => formatTextPreview(decodedText, selectedExtension), [decodedText, selectedExtension]);
 
   return (
     <div className="grid gap-4 p-6 xl:grid-cols-[380px_1fr]">
@@ -124,14 +151,14 @@ export function EvidenceWorkspace({ caseId }: { caseId: string }) {
               <div className="break-all rounded-md bg-muted p-3">{selected.sha256}</div>
               {selected.mimeType.startsWith("image/") && previewUrl ? <img src={previewUrl} alt={selected.originalFilename} className="max-h-[420px] rounded-md border border-border object-contain" /> : null}
               {selected.mimeType.includes("pdf") && previewUrl ? <iframe src={previewUrl} className="h-[420px] w-full rounded-md border border-border" title={selected.originalFilename} /> : null}
-              {["txt", "log", "json", "csv", "md", "js", "ts", "sh", "py", "yml", "yaml"].includes(getFileExtension(selected.originalFilename)) && content?.base64 ? (
-                getFileExtension(selected.originalFilename) === "md" ? (
-                  <MarkdownPreview value={atob(content.base64)} />
+              {["txt", "log", "json", "csv", "md", "js", "ts", "sh", "py", "yml", "yaml"].includes(selectedExtension) && content?.base64 ? (
+                selectedExtension === "md" ? (
+                  <MarkdownPreview value={textPreview} />
                 ) : (
-                  <pre className="max-h-[420px] overflow-auto rounded-md bg-slate-950 p-3 text-xs text-white">{getFileExtension(selected.originalFilename) === "json" ? JSON.stringify(JSON.parse(atob(content.base64)), null, 2) : atob(content.base64)}</pre>
+                  <pre className="max-h-[420px] overflow-auto rounded-md bg-slate-950 p-3 text-xs text-white">{textPreview}</pre>
                 )
               ) : null}
-              {["zip", "tar.gz"].includes(getFileExtension(selected.originalFilename)) ? <div className="rounded-md bg-muted p-3">Archive metadata only. Extraction is intentionally not performed.</div> : null}
+              {["zip", "tar.gz"].includes(selectedExtension) ? <div className="rounded-md bg-muted p-3">Archive metadata only. Extraction is intentionally not performed.</div> : null}
             </div>
           ) : (
             <div className="p-4 text-sm text-slate-500">Select evidence to inspect metadata and preview supported content.</div>
